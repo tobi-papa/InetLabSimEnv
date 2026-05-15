@@ -1,0 +1,10 @@
+#pragma once
+#include <string_view>
+
+namespace entropy::version {
+
+constexpr std::string_view git_commit = "@GIT_SHA@";
+constexpr bool             git_dirty  = @GIT_DIRTY_BOOL@;
+constexpr std::string_view build_type = "@CMAKE_BUILD_TYPE@";
+
+} // namespace entropy::version

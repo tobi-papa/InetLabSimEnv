@@ -1,0 +1,14 @@
+name       = "smoke"
+repeats    = 1
+warmups    = 0
+seed       = 42
+output_dir = "results"
+
+[[graphs]]
+loader = "edgelist"
+[graphs.params]
+path     = "data/samples/k4.txt"
+directed = false
+
+[[algorithms]]
+name = "structural_entropy"
