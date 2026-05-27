@@ -1,0 +1,20 @@
+{
+  "build_type": "Debug",
+  "config_verbatim": "",
+  "extraction": "induced",
+  "git_commit": "755147c5d5f3538be914a4c5e7358e12c70ff487",
+  "git_dirty": true,
+  "mother_graphs": [
+    {
+      "N": 200,
+      "content_hash": 14128628671757769639,
+      "origin_label": "sbm(N=200,K=4,p_in=0.1,p_out=0.01,seed=6627039502810611487)",
+      "seed": 6627039502810611487,
+      "topology": "SBM"
+    }
+  ],
+  "n_repetitions": 2,
+  "name": "exp1_smoke",
+  "row_count": 24,
+  "seed": 7
+}

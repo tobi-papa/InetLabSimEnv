@@ -1,0 +1,2 @@
+topology,N,extraction,sub_experiment,condition,alpha_target,walk_length,start_distance,n_nodes_A,n_nodes_B,n_shared_nodes,overlap_jaccard,E_A,E_B,E_A_restricted,E_B_restricted,E_12,H1_A,H1_B,D_H1,D_JS,NMI,DC_NMI,repetition_id,mother_seed,pair_seed
+"SBM",1000,"induced","1A","SAME",0.5,-1,-1,250,250,125,0.33333333333333331,1000,1000,200,200,200,5.5,5.5099999999999998,0.01,0.02,1,1,7,42,12345

@@ -1,0 +1,9 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(git *)",
+      "Bash(rm -rf build)",
+      "Bash(cmake -B build -DCMAKE_BUILD_TYPE=Release)"
+    ]
+  }
+}
