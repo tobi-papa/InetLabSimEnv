@@ -1,0 +1,87 @@
+You are implementing a research experiment, not producing a desired positive result.
+
+Your task is to implement Experiment A exactly from the attached specification.
+
+Scientific integrity rules:
+
+1. Do not optimize the code to make the hypothesis pass.
+2. Do not create mock results, placeholder CSVs, synthetic “example” plots, or fake successful outputs.
+3. Do not assert that the result is positive unless the raw data supports it.
+4. Do not write tests that require modularity-error correlation to be positive.
+5. Do not silently change formulas, thresholds, graph parameters, seed handling, or statistical criteria.
+6. If the specification is ambiguous, stop and report the ambiguity before choosing an implementation.
+7. If the result is negative, mixed, or ambiguous, report it as negative, mixed, or ambiguous.
+8. Keep implementation correctness tests separate from scientific outcome analysis.
+9. All outputs must be reproducible from logged config files and seeds.
+10. Every generated CSV row must come from an actual completed trial, not from mocked data.
+
+Implementation requirements:
+
+A. Implement the core library first:
+- compute_H1(graph)
+- compute_HP(graph, partition)
+- compute_H2(graph) using candidate partitions and H_P minimization
+- SBM graph generation using the specified external-degree-fraction mu
+- graph union with edge-overlap accounting
+- compact 1D estimator
+- oracle 1D degree baseline: H1(G_merge) - H1(G_A)
+- modularity measurement
+- sanity checks
+- CSV output schema
+
+B. Implement tests before running the full experiment.
+
+Required tests:
+
+1. H1 of a graph with no edges is 0.
+2. H1 of complete graph K_n is log2(n).
+3. Single-block partition passed to compute_HP equals H1.
+4. compute_H2 must always include the single-block partition.
+5. Therefore compute_H2_est(G) <= H1(G) + tolerance.
+6. compute_HP must use full graph degree d_i, not internal community degree.
+7. Graph union must satisfy:
+   edges_merge = edges_A + edges_B - edge_overlap_AB.
+8. Same seed must reproduce identical graphs and identical trial output.
+9. Different trial seeds must be logged distinctly.
+10. The compact estimator must not access Bob’s topology except vol_B and shared-node degrees.
+11. The oracle 1D degree baseline must equal H1(G_merge) - H1(G_A).
+12. The H2 oracle must choose the partition with minimum H_P among candidates, not maximum modularity.
+13. Disconnected graphs must be rejected or handled by an explicitly implemented disconnected entropy formula.
+14. All required CSV fields must be present.
+15. No test may assert that the hypothesis is confirmed.
+
+C. After tests pass, implement the experiment runner.
+
+The runner must:
+- use the specified mu_B grid, including values up to the near-ER region;
+- run the specified number of accepted trials per cell;
+- record rejected draws;
+- save raw trial-level CSV before aggregation;
+- save logs and configuration;
+- compute absolute, relative, and normalized errors;
+- compute cell-level summaries;
+- compute clustered/bootstrap confidence intervals;
+- generate the required plots;
+- include the degree-preserving rewired null control if specified.
+
+D. Reporting rules:
+
+The final report must classify the result as one of:
+- positive support for 2D structural entropy;
+- compact summary failure only;
+- negative result;
+- mixed result;
+- ambiguous result.
+
+The report must explicitly say which case occurred.
+
+Do not claim “K-dimensional entropy is necessary” if only K=2 was tested. Say “2D structural entropy is supported under these tested conditions,” and only then discuss how this motivates higher-dimensional work.
+
+Before writing conclusions, print:
+- number of accepted trials;
+- number of rejected trials;
+- all parameter values;
+- exact git commit or file hash if available;
+- all random seeds or seed-generation rule;
+- test results;
+- whether any code changed after seeing experiment outputs.
