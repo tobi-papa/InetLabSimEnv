@@ -91,6 +91,18 @@ FetchContent_Declare(CLI11
 )
 FetchContent_MakeAvailable(CLI11)
 
+# Catch2 (for tests — only fetched when EXP_A_TESTS=ON)
+option(EXP_A_TESTS "Build Experiment A unit and golden tests" OFF)
+if(EXP_A_TESTS)
+    FetchContent_Declare(Catch2
+        GIT_REPOSITORY https://github.com/catchorg/Catch2.git
+        GIT_TAG        v3.5.4
+        GIT_SHALLOW    TRUE
+    )
+    FetchContent_MakeAvailable(Catch2)
+    list(APPEND CMAKE_MODULE_PATH ${catch2_SOURCE_DIR}/extras)
+endif()
+
 # spdlog
 set(SPDLOG_BUILD_EXAMPLES OFF CACHE BOOL "" FORCE)
 set(SPDLOG_BUILD_TESTS    OFF CACHE BOOL "" FORCE)
@@ -129,6 +141,11 @@ add_library(entropy_core STATIC
     src/core/result.cpp
     src/io/config.cpp
     src/io/result_exporter.cpp
+    src/exp_a/entropy2d.cpp
+    src/exp_a/sbm_gen.cpp
+    src/exp_a/estimators.cpp
+    src/exp_a/trial.cpp
+    src/exp_a/experiment_a_runner.cpp
 )
 target_include_directories(entropy_core PUBLIC
     include
@@ -189,3 +206,11 @@ endif()
 
 apply_compiler_warnings(entropy-cli)
 apply_sanitizers(entropy-cli)
+
+# ---------------------------------------------------------------------------
+# Tests (Experiment A)
+# ---------------------------------------------------------------------------
+if(EXP_A_TESTS)
+    enable_testing()
+    add_subdirectory(tests)
+endif()

@@ -1,0 +1,31 @@
+# Experiment A — full production configuration
+# 11 mu_B × 3 n_shared × 20 reps = 660 accepted main trials + 660 null trials.
+#
+# IMPORTANT: Do NOT run this until all tests pass and the smoke run is verified.
+# Run command (after build):
+#   ./build/entropy-cli exp-a --config configs/exp_a_full.toml
+# Analysis:
+#   python analysis/exp_a/analyze_exp_a.py results/exp_a/<latest_timestamp>/
+
+[exp_a]
+base_seed    = 42
+output_dir   = "results/exp_a"
+smoke        = false
+
+[exp_a.grid]
+n_A          = 300
+n_B          = 300
+k_A          = 4
+k_B          = 4
+avg_degree_A = 10.0
+avg_degree_B = 10.0
+mu_A         = 0.20
+reps         = 20  # 20 accepted trials per cell => 660 total
+
+# mu_B grid (spec §6.4-6.5): spans strong, moderate, weak, and near-ER community regimes.
+# mu_ER ≈ (300-75)/(300-1) ≈ 0.753 for n=300, k=4.
+# Report mu_B=0.75 as "near-ER" in conclusions, never call mu_B=0.50 "near-ER".
+mu_B_values = [0.05, 0.075, 0.10, 0.15, 0.20, 0.30, 0.40, 0.50, 0.60, 0.70, 0.75]
+
+# n_shared grid (spec §6.5)
+n_shared_values = [15, 30, 90]

@@ -1,6 +1,10 @@
 You are implementing a research experiment, not producing a desired positive result.
 
 Your task is to implement Experiment A exactly from the attached specification.
+The only spec file dedicated to this experiment you should follow is : "/home/tobi/SimEnv Experiment_A_Rewritten_Implementation_Plan_Final.md"
+
+All the other ones where used to create and implement the general skeleton of this simulation environment (that is meant to be reusable and extendable to different experiments).
+You should also analyze them before implementing to understand how the environment and skeleton is organized and how it should be used to implement the new experiment.
 
 Scientific integrity rules:
 

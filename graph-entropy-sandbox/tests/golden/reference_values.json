@@ -1,0 +1,22 @@
+{
+  "path_4": {
+    "H1": 1.9182958340544893,
+    "HP_single_block": 1.9182958340544893,
+    "H2_upper_bound": 1.9182958340544893
+  },
+  "cycle_4": {
+    "H1": 2.0,
+    "HP_single_block": 2.0,
+    "H2_upper_bound": 2.0
+  },
+  "K4": {
+    "H1": 2.0,
+    "HP_single_block": 2.0,
+    "H2_upper_bound": 2.0
+  },
+  "two_triangles_bridge": {
+    "H1": 2.556656707462823,
+    "HP_single_block": 2.556656707462823,
+    "H2_upper_bound": 2.556656707462823
+  }
+}

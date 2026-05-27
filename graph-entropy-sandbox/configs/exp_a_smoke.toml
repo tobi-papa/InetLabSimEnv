@@ -1,0 +1,21 @@
+# Experiment A — smoke configuration
+# Tiny grid for quick build/run validation. Results are NOT scientifically meaningful.
+# Run: ./build/entropy-cli exp-a --config configs/exp_a_smoke.toml
+
+[exp_a]
+base_seed    = 42
+output_dir   = "results/exp_a"
+smoke        = true
+
+[exp_a.grid]
+n_A          = 300
+n_B          = 300
+k_A          = 4
+k_B          = 4
+avg_degree_A = 10.0
+avg_degree_B = 10.0
+mu_A         = 0.20
+reps         = 2   # 2 accepted trials per cell (smoke only)
+
+mu_B_values     = [0.10, 0.30, 0.75]   # 3 points spanning weak/moderate/near-ER
+n_shared_values = [15]                  # single overlap size
