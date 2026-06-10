@@ -223,6 +223,7 @@ enable_testing()
 include(Catch)
 add_executable(premerge_tests
     tests/premerge/test_smoke.cpp
+    tests/premerge/test_h1.cpp
 )
 target_link_libraries(premerge_tests PRIVATE entropy_premerge Catch2::Catch2WithMain)
 apply_compiler_warnings(premerge_tests)
