@@ -306,7 +306,7 @@ TEST_CASE("decomposition identity H^P = H1 - H(q) + S", "[hp][identity]") {
     auto d = decompose(E, V, p);
     auto [h1, W] = h1_value(E, V);
     REQUIRE(d.Hq  == Catch::Approx(0.81127812));
-    REQUIRE(d.S   == Catch::Approx(0.60380913));
+    REQUIRE(d.S   == Catch::Approx(0.60375937));   // = -(1/4)log2(3/4) - (1/4)log2(1/4); notes §B.2 "0.60381" is a rounding typo
     REQUIRE(h1 - d.Hq + d.S == Catch::Approx(d.HP).epsilon(1e-12));
     REQUIRE(d.HP  == Catch::Approx(1.2924812).epsilon(1e-6));
 }
