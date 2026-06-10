@@ -213,6 +213,7 @@ add_library(entropy_premerge STATIC
     src/premerge/bias.cpp
 )
 target_include_directories(entropy_premerge PUBLIC include ${CMAKE_BINARY_DIR}/generated)
+set_target_properties(entropy_premerge PROPERTIES POSITION_INDEPENDENT_CODE ON)
 apply_compiler_warnings(entropy_premerge)
 apply_sanitizers(entropy_premerge)
 
@@ -234,3 +235,16 @@ add_executable(premerge_tests
 target_link_libraries(premerge_tests PRIVATE entropy_premerge Catch2::Catch2WithMain)
 apply_compiler_warnings(premerge_tests)
 catch_discover_tests(premerge_tests)
+
+# ---------------------------------------------------------------------------
+# pybind11 module exposing the premerge kernel
+# ---------------------------------------------------------------------------
+FetchContent_Declare(pybind11
+    GIT_REPOSITORY https://github.com/pybind/pybind11.git
+    GIT_TAG        v2.12.0
+    GIT_SHALLOW    TRUE
+)
+FetchContent_MakeAvailable(pybind11)
+pybind11_add_module(premerge_kernel bindings/python/premerge_module.cpp)
+target_link_libraries(premerge_kernel PRIVATE entropy_premerge)
+apply_compiler_warnings(premerge_kernel)
