@@ -17,4 +17,15 @@ inline double safe_log(double p) noexcept {
     return std::log(p);
 }
 
+// Returns p * log2(p), with the convention 0 * log2(0) := 0. Precondition: p >= 0.
+inline double xlog2x(double p) noexcept {
+    if (p <= 0.0) return 0.0;
+    return p * std::log2(p);
+}
+// Returns log2(p). Returns 0.0 when p <= 0 (0*log2(0)=0 convention at call site).
+inline double safe_log2(double p) noexcept {
+    if (p <= 0.0) return 0.0;
+    return std::log2(p);
+}
+
 } // namespace entropy::util

@@ -13,8 +13,8 @@ public:
     std::string_view description() const noexcept override {
         return "1-D structural entropy (Li & Pan): Shannon entropy of the "
                "degree-based random-walk stationary distribution. "
-               "H(G) = -sum_i p_i * ln(p_i), p_i = d_i / vol(G). "
-               "Result in nats.";
+               "H(G) = -sum_i p_i * log2(p_i), p_i = d_i / vol(G). "
+               "Result in bits.";
     }
 
     Requirements requirements() const noexcept override {
@@ -34,12 +34,12 @@ public:
 
         double H = 0.0;
         for (const double p : dist)
-            H -= util::xlogx(p);
+            H -= util::xlog2x(p);
 
         AlgorithmOutput out;
         out.value = H;
-        out.metadata["formula"] = "-sum(p_i * ln(p_i))";
-        out.metadata["unit"]    = "nats";
+        out.metadata["formula"] = "-sum(p_i * log2(p_i))";
+        out.metadata["unit"]    = "bits";
         return out;
     }
 };
