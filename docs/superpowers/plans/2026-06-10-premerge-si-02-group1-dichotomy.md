@@ -251,6 +251,17 @@ Expected: a PNG path printed.
 
 ### Task 5: E2 runner (continuous knob) + pass-criterion test
 
+> **CORRECTED DURING EXECUTION (2026-06-10) — use the committed code, not the draft below.**
+> The original design (`ρ(ΔS, nominal swap-knob) ≥ 0.8`) was empirically falsified: at the
+> sizes the agglo oracle affords (`|G_B|~16`), a 2-block SBM's modularity collapses after a
+> modest number of degree-preserving swaps, so the nominal knob is near-bimodal in realized
+> modularity (`ρ(B_benefit, knob)~0`) and ΔS is flat/noisy. The committed, honest design (the
+> spec permits ΔS **or** gain): keep the exact-degree rewire so per-knob-mean `Var(ΔH¹)=0`
+> exactly, and correlate merge **gain** against each partner's **realized** community strength
+> `B_benefit = H¹(G_B) − H²(G_B)`, **pooled** over all (realization × swap-fraction) samples.
+> Result: `Var(ΔH¹)=0`, pooled `ρ(gain, B_benefit) = −0.886` over 72 points. See
+> `experiments/e2_continuous_knob.py` (commit `2ed9323`). The draft below is retained for history.
+
 **Files:**
 - Create: `experiments/e2_continuous_knob.py`, `experiments/tests/test_e2.py`
 
