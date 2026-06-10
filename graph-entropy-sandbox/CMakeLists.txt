@@ -189,3 +189,41 @@ endif()
 
 apply_compiler_warnings(entropy-cli)
 apply_sanitizers(entropy-cli)
+
+# ---------------------------------------------------------------------------
+# Catch2 v3 (tests)
+# ---------------------------------------------------------------------------
+FetchContent_Declare(Catch2
+    GIT_REPOSITORY https://github.com/catchorg/Catch2.git
+    GIT_TAG        v3.6.0
+    GIT_SHALLOW    TRUE
+)
+FetchContent_MakeAvailable(Catch2)
+list(APPEND CMAKE_MODULE_PATH ${catch2_SOURCE_DIR}/extras)
+
+# ---------------------------------------------------------------------------
+# premerge kernel (label-keyed; NOT an IEntropyAlgorithm plugin)
+# ---------------------------------------------------------------------------
+add_library(entropy_premerge STATIC
+    src/premerge/h1.cpp
+    src/premerge/partition_entropy.cpp
+    src/premerge/merge.cpp
+    src/premerge/h2_min.cpp
+    src/premerge/message.cpp
+    src/premerge/bias.cpp
+)
+target_include_directories(entropy_premerge PUBLIC include ${CMAKE_BINARY_DIR}/generated)
+apply_compiler_warnings(entropy_premerge)
+apply_sanitizers(entropy_premerge)
+
+# ---------------------------------------------------------------------------
+# Tests
+# ---------------------------------------------------------------------------
+enable_testing()
+include(Catch)
+add_executable(premerge_tests
+    tests/premerge/test_smoke.cpp
+)
+target_link_libraries(premerge_tests PRIVATE entropy_premerge Catch2::Catch2WithMain)
+apply_compiler_warnings(premerge_tests)
+catch_discover_tests(premerge_tests)
