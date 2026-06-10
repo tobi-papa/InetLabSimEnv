@@ -30,6 +30,10 @@
 - **Run order (user-instructed):** Groups 1 → 2 → 3 first; **real data (Group 4) last.**
 - **Groups 1–3 have zero external-repo dependencies.** They use only the C++ `agglo`/`exact`
   H² minimizers on small synthetic graphs. CoDeSEG/GESim/NHE/NetComp are Group-4 / E8 only.
+- **Baseline repos confirmed reachable (2026-06-10, HTTP 200):** `SELGroup/CoDeSEG` (**C++**),
+  `LazyShion/GESim` (**C++**), `JHMou/network-hierarchy-entropy-based-dissimilarity` (Python),
+  `peterewills/NetComp` (Python, also on **PyPI** as `netcomp`). CoDeSEG/GESim being C++-backed
+  means wrapping is fast even at com-DBLP scale — the earlier "pure-Python at scale" caveat is moot.
 - **Numerics convention (user-instructed):** **bits (log₂) everywhere — one global convention.**
   This overrides the sandbox's prior nats default (sandbox spec §6). Conversion is a Phase-A task:
   `util/numerics.hpp` gains base-2 entropy helpers (`xlog2x`, `safe_log2`); the existing
