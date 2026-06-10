@@ -5,6 +5,7 @@
 #include <map>
 #include <vector>
 #include <algorithm>
+#include <stdexcept>
 namespace entropy::premerge {
 
 // adjacency at module granularity: which module pairs are connected by >=1 edge
@@ -46,4 +47,30 @@ std::pair<double,Partition> h2_min_agglo(const EdgeList& E, const NodeSet& V,
     }
     return {best, best_part};
 }
+
+std::pair<double,Partition> h2_min_exact(const EdgeList& E, const NodeSet& V, int max_nodes) {
+    if (static_cast<int>(V.size()) > max_nodes)
+        throw std::runtime_error("h2_min_exact: instance exceeds max_nodes");
+    int n = static_cast<int>(V.size());
+    std::vector<int> a(n, 0), b(n, 0);     // restricted growth string + running max
+    double best = 1e300; Partition best_part;
+    auto eval = [&]() {
+        Partition part; for (int i = 0; i < n; ++i) part[V[i]] = a[i];
+        double h = h_partition(E, V, part);
+        if (h < best) { best = h; best_part = part; }
+    };
+    // iterate all restricted growth strings (each = one set partition)
+    while (true) {
+        eval();
+        int i = n - 1;
+        while (i > 0 && a[i] == b[i-1] + 1) { a[i] = 0; --i; }
+        if (i == 0) break;
+        a[i] += 1;
+        int bi = std::max(b[i-1], a[i]);
+        for (int j = i; j < n; ++j) b[j] = (j==i)? bi : b[i];
+        for (int j = i+1; j < n; ++j) b[j] = std::max(b[j-1], a[j]);
+    }
+    return {best, best_part};
+}
+
 } // namespace entropy::premerge
