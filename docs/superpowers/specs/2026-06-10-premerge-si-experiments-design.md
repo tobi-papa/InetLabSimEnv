@@ -30,9 +30,12 @@
 - **Run order (user-instructed):** Groups 1 → 2 → 3 first; **real data (Group 4) last.**
 - **Groups 1–3 have zero external-repo dependencies.** They use only the C++ `agglo`/`exact`
   H² minimizers on small synthetic graphs. CoDeSEG/GESim/NHE/NetComp are Group-4 / E8 only.
-- **Numerics convention:** the premerge kernel computes in **bits** (log₂), per experiment spec
-  §2.1 — this overrides the sandbox's nats default (sandbox spec §6). The existing
-  `structural_entropy.cpp` plugin keeps nats; the kernel is a separate code path.
+- **Numerics convention (user-instructed):** **bits (log₂) everywhere — one global convention.**
+  This overrides the sandbox's prior nats default (sandbox spec §6). Conversion is a Phase-A task:
+  `util/numerics.hpp` gains base-2 entropy helpers (`xlog2x`, `safe_log2`); the existing
+  `structural_entropy.cpp` plugin switches to them (value, `description`, `formula`/`unit`
+  metadata → bits); sandbox spec §6 is updated to read "bits (log₂)"; the K_n unit test's expected
+  value is rebased to `log₂`. No nats remain in the tree.
 - **Node identity:** **global integer labels** (experiment spec §2.1 data contract). The merge
   requires anchors to align by shared ID across `G_A`, `G_B`, `G_M`. The kernel adds a thin
   label↔dense-index map; the core CSR `Graph` (dense `0..n-1`) is unchanged.
@@ -184,10 +187,12 @@ Three layers, all backed by the verified fixtures in `pre_merge_SI_theory.md` Ap
 
 Each phase ends with a green, demonstrable checkpoint. Groups 1–3 require **no external repos**.
 
-- **Phase A — C++ premerge kernel.** `labeling`, `h1`, `partition_entropy` (+ identity), `merge`
-  + `overlaps`, `h2_min` (`agglo` + `exact`), `message` (build + reconstruct), `bias`. C++ tests:
-  3-node path, identity, reconstruction, volume-sum, E4 witnesses. *Exit:* all kernel fixtures
-  green in C++.
+- **Phase A — C++ premerge kernel (+ global bits conversion).** First: convert the tree to bits —
+  add `xlog2x`/`safe_log2` to `util/numerics.hpp`, switch `structural_entropy.cpp` and its unit
+  test to bits, update sandbox spec §6. Then the kernel: `labeling`, `h1`, `partition_entropy`
+  (+ identity), `merge` + `overlaps`, `h2_min` (`agglo` + `exact`), `message` (build +
+  reconstruct), `bias` — all in bits. C++ tests: 3-node path, identity, reconstruction,
+  volume-sum, E4 witnesses. *Exit:* all kernel fixtures green in C++; no nats remain.
 - **Phase B — pybind11 module + cross-validation.** `premerge_module.cpp`, `kernel.py` shim,
   `reference.py` oracle, cross-validation test to 1e-9. *Exit:* Python can call every kernel
   function; kernel == reference on random instances.
