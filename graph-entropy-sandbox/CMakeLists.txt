@@ -228,6 +228,7 @@ add_executable(premerge_tests
     tests/premerge/test_merge.cpp
     tests/premerge/test_h2_min.cpp
     tests/premerge/test_message.cpp
+    tests/premerge/test_bias.cpp
 )
 target_link_libraries(premerge_tests PRIVATE entropy_premerge Catch2::Catch2WithMain)
 apply_compiler_warnings(premerge_tests)
